@@ -1,0 +1,49 @@
+{
+  "title": "Kuhesabu",
+  "bundleVersion": "1",
+  "languages": {
+    "available": [
+      "sw",
+      "sw-TZ"
+    ],
+    "default": "sw"
+  },
+  "features": {
+    "signLanguage": false,
+    "easyRead": true,
+    "glossary": true,
+    "eli5": false,
+    "readAloud": true,
+    "autoplay": true,
+    "showTutorial": true,
+    "showNavigationControls": true,
+    "describeImages": true,
+    "notepad": false,
+    "state": true,
+    "characterDisplay": false,
+    "highlight": false,
+    "activities": true
+  },
+  "analytics": {
+    "enabled": false,
+    "siteId": 0,
+    "trackerUrl": "https://unisitetracker.unicef.io/matomo.php",
+    "srcUrl": "https://unisitetracker.unicef.io/matomo.js"
+  },
+  "defaultSettings": {
+    "dockLayout": {
+      "width": "full",
+      "position": "bottom",
+      "align": "spread"
+    },
+    "theme": "dark",
+    "iconSize": "md",
+    "reduceMotion": false
+  },
+  "lockedSettings": [
+    "dockLayout",
+    "theme",
+    "iconSize",
+    "reduceMotion"
+  ]
+}

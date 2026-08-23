@@ -1,0 +1,228 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * shadcn/ui new-york + neutral baseColor — generated via `pnpm dlx
+ * shadcn@latest init`. The chrome lives inside an existing book page that
+ * always renders on a white background, so dark mode is unused for now —
+ * the .dark variant is kept for future use and to match shadcn boilerplate.
+ */
+:root {
+  --nav-height: 80px;
+  --radius: 0.625rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.269 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.371 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  color-scheme: dark;
+}
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/*
+ * Book-specific styles preserved from the legacy `tailwind_css.css`. These
+ * apply to content rendered inside `#content` (not chrome), so they must
+ * land in the per-book Tailwind output too.
+ */
+
+body[nav-position="top"] {
+  padding-top: var(--nav-height);
+}
+body[nav-position="bottom"] {
+  padding-bottom: var(--nav-height);
+}
+
+/*
+ * Accessibility — icon size.
+ * Scales every SVG inside a dock-trigger button (and the dock activity X /
+ * reset icons) when the user picks a larger icon size in settings. We size
+ * the SVG only, not the button hit-target, so click areas stay generous
+ * but the visual glyph grows.
+ */
+body[icon-size="sm"] [data-dock-trigger] svg,
+body[icon-size="sm"] [data-dock-icon] svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+body[icon-size="md"] [data-dock-trigger] svg,
+body[icon-size="md"] [data-dock-icon] svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+body[icon-size="lg"] [data-dock-trigger] svg,
+body[icon-size="lg"] [data-dock-icon] svg {
+  width: 2rem;
+  height: 2rem;
+}
+
+/*
+ * Accessibility — reduce motion.
+ * Disables transitions and animations across the entire document for users
+ * who experience motion sickness or distraction from animated UI. Matches
+ * the spirit of `prefers-reduced-motion` but driven by the explicit toggle.
+ */
+body[reduce-motion="true"],
+body[reduce-motion="true"] *,
+body[reduce-motion="true"] *::before,
+body[reduce-motion="true"] *::after {
+  transition-duration: 0ms !important;
+  animation-duration: 0ms !important;
+  animation-iteration-count: 1 !important;
+  scroll-behavior: auto !important;
+}
+
+section[data-section-type="activity_open_ended_answer"] textarea {
+  line-height: 1.75rem;
+  background-image: radial-gradient(circle, #d1d5db 1px, transparent 1.5px);
+  background-size: 6px 1.75rem;
+  background-position: 0 0.875rem;
+  background-repeat: repeat;
+  background-attachment: local;
+}
+
+/*
+ * Word-by-word TTS highlight. Forced yellow/black so the active word stays
+ * legible regardless of the surrounding text color (the page may render in
+ * white, orange, or any other foreground). `transition` smooths the swap
+ * between adjacent words.
+ */
+span[data-word-index].bg-yellow-300 {
+  background-color: #fde047 !important;
+  color: #000 !important;
+  border-radius: 3px;
+  padding: 0 1px;
+  margin: 0 -1px;
+  transition: background-color 120ms ease, color 120ms ease;
+}
+
+/*
+ * Per-sentence ("block") highlight — used when the user has the word-level
+ * toggle off, or when the target element can't host inline word spans
+ * (img, input, textarea, select). Matches the studio's "PREVIEW: PER-SENTENCE"
+ * visual: a rounded blue outline around the whole text unit.
+ *
+ * `box-decoration-break: clone` is the key bit: book content wraps `[data-id]`
+ * sentences in `<span>` tags that often break across lines. Without `clone`,
+ * the box-shadow + border-radius would draw one rectangle around the bounding
+ * box (covering whitespace between lines). With `clone` the outline wraps
+ * around each line fragment individually — the same visual treatment text
+ * highlighters use.
+ */
+.tts-active-block {
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  box-shadow: 0 0 0 2px #2563eb; /* blue-600 */
+  border-radius: 6px;
+  background-color: rgba(37, 99, 235, 0.04);
+  transition: box-shadow 200ms ease, background-color 200ms ease;
+}
+
+/*
+ * Tutorial popovers — replaces the @keyframes/animation/boxShadow
+ * extensions from the legacy v3 tailwind.config.js. Kept as raw CSS since
+ * the runtime references `animate-tutorialPopIn` etc. by class name.
+ */
+@layer utilities {
+  @keyframes tutorialPopIn {
+    0% { opacity: 0; transform: scale(0.9); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+  @keyframes pulseBorder {
+    0% { box-shadow: 0 0 0 0 rgba(49, 130, 206, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(49, 130, 206, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(49, 130, 206, 0); }
+  }
+  @keyframes glossaryFlash {
+    0%   { outline-color: rgba(37, 99, 235, 0.95); outline-offset: 4px; }
+    15%  { outline-color: rgba(37, 99, 235, 0.4);  outline-offset: 6px; }
+    30%  { outline-color: rgba(37, 99, 235, 0.95); outline-offset: 4px; }
+    45%  { outline-color: rgba(37, 99, 235, 0.4);  outline-offset: 6px; }
+    60%  { outline-color: rgba(37, 99, 235, 0.95); outline-offset: 4px; }
+    85%  { outline-color: rgba(37, 99, 235, 0.95); outline-offset: 4px; }
+    100% { outline-color: rgba(37, 99, 235, 0);    outline-offset: 4px; }
+  }
+  .animate-tutorialPopIn {
+    animation: tutorialPopIn 0.3s ease-out forwards;
+  }
+  .animate-pulseBorder {
+    animation: pulseBorder 2s infinite;
+  }
+  .shadow-tutorial {
+    box-shadow: 0 0 0 4px rgba(49, 130, 206, 0.3);
+  }
+  .glossary-flash {
+    outline: 2px solid rgba(37, 99, 235, 0.9);
+    outline-offset: 4px;
+    border-radius: 4px;
+    animation: glossaryFlash 3.5s ease-out forwards;
+  }
+}
