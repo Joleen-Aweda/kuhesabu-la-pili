@@ -47,9 +47,17 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: 'Sassoon Primary';
+  src: url('./fonts/SassoonPrimary-subset.ttf') format('truetype');
+  font-weight: 400 800;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* Apply the font globally */
 body, p, h1, h2, h3, h4, h5, h6, span, div, button, input, textarea, select {
-  font-family: "Merriweather", serif;
+  font-family: "Sassoon Primary", "Atkinson Hyperlegible", sans-serif;
 }
 
 #nav-container, #nav-container *,
