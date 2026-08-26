@@ -6,6 +6,16 @@
   font-display: swap;
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
+
+/* Use one consistent, plain zero glyph without changing any other character. */
+@font-face {
+  font-family: 'Book Zero';
+  src: local('Arial'), local('Helvetica'), local('Liberation Sans'), local('DejaVu Sans');
+  font-weight: 400 800;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0030;
+}
 @font-face {
   font-family: 'Atkinson Hyperlegible';
   src: url('./fonts/AtkinsonHyperlegible-400-latin-ext.woff2') format('woff2');
@@ -56,11 +66,73 @@
 }
 
 /* Apply the font globally */
-body, p, h1, h2, h3, h4, h5, h6, span, div, button, input, textarea, select {
-  font-family: "Sassoon Primary", "Atkinson Hyperlegible", sans-serif;
+body, p, h1, h2, h3, h4, h5, h6, span, div, td, th, li, label, small, strong, b, i, s, button, input, textarea, select {
+  font-family: "Book Zero", "Sassoon Primary", "Atkinson Hyperlegible", sans-serif;
 }
 
 #nav-container, #nav-container *,
 #interface-container, #interface-container * {
   font-family: 'Atkinson Hyperlegible', sans-serif;
+}
+
+/* Match the readable 24px scale established on page 17 across pages 1–16. */
+:is(
+  [data-section-id="pg001_sec001"], [data-section-id="pg002_sec001"],
+  [data-section-id="pg003_sec001"], [data-section-id="pg004_sec001"],
+  [data-section-id="pg005_sec001"], [data-section-id="pg006_sec001"],
+  [data-section-id="pg007_sec001"], [data-section-id="pg008_sec001"],
+  [data-section-id="pg009_sec001"], [data-section-id="pg010_sec001"],
+  [data-section-id="pg011_sec001"], [data-section-id="pg012_sec001"],
+  [data-section-id="pg013_sec001"], [data-section-id="pg014_sec001"],
+  [data-section-id="pg015_sec001"], [data-section-id="pg016_sec001"]
+),
+:is(
+  [data-section-id="pg001_sec001"], [data-section-id="pg002_sec001"],
+  [data-section-id="pg003_sec001"], [data-section-id="pg004_sec001"],
+  [data-section-id="pg005_sec001"], [data-section-id="pg006_sec001"],
+  [data-section-id="pg007_sec001"], [data-section-id="pg008_sec001"],
+  [data-section-id="pg009_sec001"], [data-section-id="pg010_sec001"],
+  [data-section-id="pg011_sec001"], [data-section-id="pg012_sec001"],
+  [data-section-id="pg013_sec001"], [data-section-id="pg014_sec001"],
+  [data-section-id="pg015_sec001"], [data-section-id="pg016_sec001"]
+) * {
+  font-size: 24px !important;
+}
+
+:is(
+  [data-section-id="pg001_sec001"], [data-section-id="pg002_sec001"],
+  [data-section-id="pg003_sec001"], [data-section-id="pg004_sec001"],
+  [data-section-id="pg005_sec001"], [data-section-id="pg006_sec001"],
+  [data-section-id="pg007_sec001"], [data-section-id="pg008_sec001"],
+  [data-section-id="pg009_sec001"], [data-section-id="pg010_sec001"],
+  [data-section-id="pg011_sec001"], [data-section-id="pg012_sec001"],
+  [data-section-id="pg013_sec001"], [data-section-id="pg014_sec001"],
+  [data-section-id="pg015_sec001"], [data-section-id="pg016_sec001"]
+) :is(h1, h2, h3) {
+  font-size: 29px !important;
+}
+
+@media (max-width: 700px) {
+  :is(
+    [data-section-id="pg001_sec001"], [data-section-id="pg002_sec001"],
+    [data-section-id="pg003_sec001"], [data-section-id="pg004_sec001"],
+    [data-section-id="pg005_sec001"], [data-section-id="pg006_sec001"],
+    [data-section-id="pg007_sec001"], [data-section-id="pg008_sec001"],
+    [data-section-id="pg009_sec001"], [data-section-id="pg010_sec001"],
+    [data-section-id="pg011_sec001"], [data-section-id="pg012_sec001"],
+    [data-section-id="pg013_sec001"], [data-section-id="pg014_sec001"],
+    [data-section-id="pg015_sec001"], [data-section-id="pg016_sec001"]
+  ),
+  :is(
+    [data-section-id="pg001_sec001"], [data-section-id="pg002_sec001"],
+    [data-section-id="pg003_sec001"], [data-section-id="pg004_sec001"],
+    [data-section-id="pg005_sec001"], [data-section-id="pg006_sec001"],
+    [data-section-id="pg007_sec001"], [data-section-id="pg008_sec001"],
+    [data-section-id="pg009_sec001"], [data-section-id="pg010_sec001"],
+    [data-section-id="pg011_sec001"], [data-section-id="pg012_sec001"],
+    [data-section-id="pg013_sec001"], [data-section-id="pg014_sec001"],
+    [data-section-id="pg015_sec001"], [data-section-id="pg016_sec001"]
+  ) * {
+    font-size: 18px !important;
+  }
 }
