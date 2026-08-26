@@ -42,8 +42,6 @@ TOC_PAGE_NUMBERS = {
     "pg004_page_117": 117,
     "pg004_page_130": 130,
 }
-TOC_ROMAN_PAGE_NUMBERS = {"pg003_page_roman_v": 5, "pg003_page_roman_vi": 6}
-
 PAGE_THIRTEEN_COLUMN_SPEECH = {}
 
 # Page 39 in this edition is the chapter opener for addition. Older pipeline
@@ -275,9 +273,7 @@ def toc_page_spoken(text_id: str) -> str | None:
     page_number = TOC_PAGE_NUMBERS.get(base_id)
     if page_number is None:
         return None
-    if base_id in TOC_ROMAN_PAGE_NUMBERS:
-        return f"namba {number_to_swahili(page_number)} ya Kirumi"
-    return f"ukurasa wa {ordinal_to_swahili(page_number) if page_number == 1 else number_to_swahili(page_number)}"
+    return f"ukurasa wa {ordinal_to_swahili(page_number)}"
 
 
 def speech_segments(text_id: str, text: str) -> tuple[SpeechSegment, ...]:
@@ -300,8 +296,8 @@ def speech_segments(text_id: str, text: str) -> tuple[SpeechSegment, ...]:
         # Keep the compact slash in print, but pronounce it naturally as “au”.
         return (SpeechSegment(DEFAULT_VOICE, "Soma au Sikiliza habari hii"),)
     if base_id in {
-        "pg035_n0024", "pg035_n0027",
-        "pg036_n0040", "pg036_n0043", "pg036_n0046", "pg036_n0049",
+        "pg035_n0003", "pg035_n0024", "pg035_n0027",
+        "pg036_n0004", "pg036_n0040", "pg036_n0043", "pg036_n0046", "pg036_n0049",
         "pg037_n0154",
         "pg044_n0028",
         "pg096_n0009",
@@ -311,6 +307,9 @@ def speech_segments(text_id: str, text: str) -> tuple[SpeechSegment, ...]:
         "pg140_n0012", "pg140_n0014", "pg140_n0016", "pg140_n0018",
         "pg140_n0020", "pg140_n0022", "pg140_n0024",
         "pg144_n0010", "pg144_n0012", "pg144_n0015",
+        "pg008_n0010", "pg009_n0014", "pg009_n0018",
+        "pg010_n0004", "pg010_n0219", "pg011_n0004", "pg011_n0220",
+        "pg012_n0003", "pg012_n0006", "pg013_n0004",
     }:
         # These questions display alternate reading modes with a slash.
         return (SpeechSegment(DEFAULT_VOICE, text.replace(" / ", " au ")),)
