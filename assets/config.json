@@ -9,7 +9,7 @@
     "default": "sw"
   },
   "features": {
-    "signLanguage": false,
+    "signLanguage": true,
     "easyRead": true,
     "glossary": true,
     "eli5": false,
