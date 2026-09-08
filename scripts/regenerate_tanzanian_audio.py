@@ -102,6 +102,43 @@ class SpeechSegment:
     text: str
 
 
+ACCESSIBILITY_SPEECH_OVERRIDES = {
+    "pg001_n0015": "I S B N. Mia tisa sabini na nane, dashi, elfu tisa mia tisa kumi na mbili, dashi, mia saba hamsini na tatu, dashi, arobaini na tisa, dashi, tano.",
+    "pg002_n0006": "I S B N. Mia tisa sabini na nane, dashi, elfu tisa mia tisa kumi na mbili, dashi, mia saba hamsini na tatu, dashi, arobaini na tisa, dashi, tano.",
+    "pg002_n0018": "Haki zote zimehifadhiwa. Hairuhusiwi kunakili, kurudufu, kuchapisha, kutafsiri au kukitoa kitabu hiki kwa namna yoyote ile bila idhini ya maandishi kutoka Taasisi ya Elimu Tanzania.",
+    "pg005_n0004": "Taasisi ya Elimu Tanzania, T E T, inatambua na kuthamini mchango muhimu wa washiriki kutoka taasisi mbalimbali za umma na binafsi zilizoshiriki kufanikisha uandishi wa kitabu hiki cha mwanafunzi. Kipekee T E T inatoa shukurani kwa Chuo Kikuu cha Dar es Salaam, U D S M, Chuo Kikuu cha Sokoine, S U A, Chuo Kikuu cha Dodoma, U D O M, Chuo Kikuu Ardhi, A R U, Chuo Kikuu Kishiriki cha Elimu Dar es Salaam, D U C E, Chuo Kikuu Kishiriki Marian Bagamoyo, MARUCo, Idara ya Uthibiti Ubora wa Shule, S Q A, Vyuo vya Ualimu, na Shule za Msingi.",
+    "pg006_n0002": "Utangulizi.",
+    "pg007_n0012": "Nani mwenye mfuko wangu uliopotea. Ubeti huu utarudiwa mara mbili wakati wa kuimba.",
+    "pg007_n0017": "Nani mwenye mfuko wangu uliopotea. Ubeti huu utarudiwa mara mbili wakati wa kuimba.",
+    "pg007_n0022": "Nani mwenye mfuko wangu uliopotea. Ubeti huu utarudiwa mara mbili wakati wa kuimba.",
+    "pg009_im001": "Wanafunzi kumi wamesimama kwenye namba maalumu katika duara. Mwanafunzi wa kwanza amesimama kwenye namba mia moja na moja; wa pili mia moja na mbili; wa tatu mia moja na tatu; wa nne mia moja na nne; wa tano mia moja na tano; wa sita mia moja na sita; wa saba mia moja na saba; wa nane mia moja na nane; wa tisa mia moja na tisa; na wa kumi mia moja na kumi. Mmoja wao anacheza na mpira.",
+    "pg010_n0008": "mia mbili na moja",
+    "pg020_n0021": "Sawa sawa, mamia moja.",
+    "pg020_n0049": "Sawa sawa, mamia moja.",
+    "pg021_n0022": "Sawa sawa, mamia matatu.",
+    "pg021_n0042": "Sawa sawa, mamia.",
+    "pg024_im001_crop_v1": "Kuna vizibo viwili katika nafasi ya mamia, vizibo viwili katika nafasi ya makumi, na vizibo vitano katika nafasi ya mamoja. Jaza namba katika dashi.",
+    "pg024_im002": "Kuna vizibo viwili katika nafasi ya mamia, vizibo vitano katika nafasi ya makumi, na vizibo vinne katika nafasi ya mamoja. Jaza namba katika dashi.",
+    "pg024_im003": "Kuna vizibo vitano katika nafasi ya mamia, vizibo vitatu katika nafasi ya makumi, na vizibo vinne katika nafasi ya mamoja. Jaza namba katika dashi.",
+    "pg024_im004": "Kuna vizibo vinane katika nafasi ya mamia, vizibo vinane katika nafasi ya makumi, na vizibo vinane katika nafasi ya mamoja. Jaza namba katika dashi.",
+    "pg024_im005": "Kuna vizibo vitatu katika nafasi ya mamia, hakuna kizibo katika nafasi ya makumi, na vizibo vinne katika nafasi ya mamoja. Jaza namba katika dashi.",
+    "pg024_im006": "Kuna kizibo kimoja katika nafasi ya mamia, hakuna kizibo katika nafasi ya makumi, na vizibo vinane katika nafasi ya mamoja. Jaza namba katika dashi.",
+    "pg039_im001": "Katika mamia kuna vizibo viwili, ongeza vizibo vitatu, sawa sawa na vizibo vitano.",
+    "pg039_im002": "Katika makumi kuna vizibo viwili, ongeza vizibo vinne, sawa sawa na vizibo sita.",
+    "pg039_im003": "Katika mamoja kuna vizibo vitatu, ongeza vizibo vitano, sawa sawa na vizibo vinane.",
+}
+
+SILENT_SPEECH_IDS = {
+    "pg002_n0019", "pg005_n0005",
+    *{f"pg025_dash{number:02d}" for number in range(1, 7)},
+    *{f"pg026_dash{number:02d}" for number in range(1, 23)},
+    "pg039_n0028", "pg039_n0030", "pg039_n0032",
+    "pg039_im004", "pg039_im005", "pg039_im006",
+    "pg039_n0039", "pg039_n0041", "pg039_n0043",
+    "pg039_n0047", "pg039_n0049", "pg039_n0051",
+}
+
+
 def number_to_swahili(value: int) -> str:
     """Return a natural Swahili reading for a non-negative integer."""
     if value < 10:
@@ -244,6 +281,9 @@ def spoken_swahili(text: str) -> str:
     # Separate the syllables after operator expansion so the hyphen remains a
     # pronunciation cue and is not interpreted as subtraction.
     spoken = re.sub(r"\bpasi\b", "pa-si", spoken, flags=re.I)
+    # Give the Tanzanian voice an explicit syllable cue for this frequently
+    # mispronounced mathematical term.
+    spoken = re.sub(r"\bthamani\b", "tha-mani", spoken, flags=re.I)
     spoken = re.sub(r"\s+", " ", spoken).strip(" ,")
     return spoken
 
@@ -279,6 +319,18 @@ def toc_page_spoken(text_id: str) -> str | None:
 def speech_segments(text_id: str, text: str) -> tuple[SpeechSegment, ...]:
     """Transform content into speech segments that all use Daudi."""
     base_id = text_id[:-10] if text_id.endswith("_easy_read") else text_id
+    if base_id in SILENT_SPEECH_IDS:
+        return (SpeechSegment("silence", ""),)
+    if base_id in ACCESSIBILITY_SPEECH_OVERRIDES:
+        return (SpeechSegment(DEFAULT_VOICE, ACCESSIBILITY_SPEECH_OVERRIDES[base_id]),)
+    page_match = re.match(r"pg(\d{3})_", base_id)
+    if page_match and 41 <= int(page_match.group(1)) <= 48:
+        text = re.sub(r"\bvikundi\b", "vizibo au visoda", text, flags=re.I)
+        text = re.sub(r"\bkikundi\b", "kizibo au kisoda", text, flags=re.I)
+    if base_id.startswith("pg027_"):
+        text = re.sub(r"\bni\s+dashi\b", "sawa sawa dashi", text, flags=re.I)
+    if re.search(r"\b(?:jumlisha|toa|zidisha|gawanya)\b", text, flags=re.I):
+        text = re.sub(r"\bni\s+dashi\b", "sawa sawa dashi", text, flags=re.I)
     numbered_heading = re.fullmatch(
         r"\s*(Zoezi\s+la|Shughuli\s+ya|Kazi\s+ya)\s+(\d+)\s*[.]?\s*",
         text,
