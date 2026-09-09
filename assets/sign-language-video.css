@@ -1,0 +1,29 @@
+/* Keep the native sign-language player reachable and touch-draggable. */
+[data-sign-language-player] {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  z-index: 59 !important;
+  max-width: calc(100vw - 2rem) !important;
+}
+[data-sign-language-player] video {
+  display: block !important;
+  width: 100% !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+[data-sign-language-drag-handle] {
+  touch-action: none !important;
+  -webkit-user-select: none !important;
+  user-select: none !important;
+}
+@media (max-width: 767.98px) {
+  [data-sign-language-player] {
+    max-width: calc(100vw - 1rem) !important;
+    max-height: calc(100dvh - 4.5rem - env(safe-area-inset-bottom)) !important;
+  }
+  [data-sign-language-player] video {
+    max-height: calc(100dvh - 7.25rem - env(safe-area-inset-bottom)) !important;
+  }
+  [data-sign-language-drag-handle] { min-height: 44px !important; }
+}
