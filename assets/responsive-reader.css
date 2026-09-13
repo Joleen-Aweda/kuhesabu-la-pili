@@ -9,13 +9,10 @@ body { min-width: 0; }
 #content table { display: block; max-width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
 #content :where(button, input, select, textarea, [role="button"]) { touch-action: manipulation; }
 
-@media (max-width: 640px) {
-  body { align-items: flex-start !important; padding-bottom: calc(12rem + env(safe-area-inset-bottom)) !important; }
-  #content.container { padding-inline: 1rem !important; padding-top: 1rem !important; }
-  #content :where(button, input, select, textarea, [role="button"]) { min-height: 44px; }
-
+@media (max-width: 1200px) {
+  body { padding-bottom: calc(12rem + env(safe-area-inset-bottom)) !important; }
   /* The runtime renders three groups: menu, page navigation, and reader tools. */
-  #interface-container [role="group"][class*="fixed"] {
+  body [role="group"][class*="fixed"][class*="z-[55]"] {
     display: grid !important;
     grid-template-columns: minmax(0, 1fr);
     gap: .15rem !important;
@@ -26,16 +23,21 @@ body { min-width: 0; }
     border-radius: 0 !important;
     box-sizing: border-box;
   }
-  #interface-container [role="group"][class*="fixed"] > div { min-width: 0 !important; width: 100%; }
-  #interface-container [role="group"][class*="fixed"] > .order-1 { grid-column: 1; grid-row: 1; }
-  #interface-container [role="group"][class*="fixed"] > .order-2 { grid-column: 1; grid-row: 2; display: flex; justify-content: center; }
-  #interface-container [role="group"][class*="fixed"] > .order-3 { grid-column: 1; grid-row: 3; justify-content: center; }
-  #interface-container [role="group"][class*="fixed"] [class*="min-w-64"] { min-width: 0 !important; }
-  #interface-container [role="group"][class*="fixed"] button { flex-shrink: 0; min-width: 40px; min-height: 44px; }
-  #interface-container [role="group"][class*="fixed"] > .order-1,
-  #interface-container [role="group"][class*="fixed"] > .order-3 { overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
-  #interface-container [role="group"][class*="fixed"] > .order-1::-webkit-scrollbar,
-  #interface-container [role="group"][class*="fixed"] > .order-3::-webkit-scrollbar { display: none; }
-  #interface-container [class*="fixed"][class*="z-[56]"] { bottom: calc(10rem + env(safe-area-inset-bottom)) !important; max-width: calc(100vw - 1rem); }
+  body [role="group"][class*="fixed"][class*="z-[55]"] > div { min-width: 0 !important; width: 100%; }
+  body [role="group"][class*="fixed"][class*="z-[55]"] > .order-1 { grid-column: 1; grid-row: 1; }
+  body [role="group"][class*="fixed"][class*="z-[55]"] > .order-2 { grid-column: 1; grid-row: 2; display: flex; justify-content: center; }
+  body [role="group"][class*="fixed"][class*="z-[55]"] > .order-3 { grid-column: 1; grid-row: 3; justify-content: center; }
+  body [role="group"][class*="fixed"][class*="z-[55]"] [class*="min-w-64"] { min-width: 0 !important; }
+  body [role="group"][class*="fixed"][class*="z-[55]"] button { flex-shrink: 0; min-width: 40px; min-height: 44px; }
+  body [role="group"][class*="fixed"][class*="z-[55]"] > .order-1,
+  body [role="group"][class*="fixed"][class*="z-[55]"] > .order-3 { overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  body [role="group"][class*="fixed"][class*="z-[55]"] > .order-1::-webkit-scrollbar,
+  body [role="group"][class*="fixed"][class*="z-[55]"] > .order-3::-webkit-scrollbar { display: none; }
+  body [class*="fixed"][class*="z-[56]"] { bottom: calc(10rem + env(safe-area-inset-bottom)) !important; max-width: calc(100vw - 1rem); }
+}
+@media (max-width: 640px) {
+  body { align-items: flex-start !important; }
+  #content.container { padding-inline: 1rem !important; padding-top: 1rem !important; }
+  #content :where(button, input, select, textarea, [role="button"]) { min-height: 44px; }
 }
 @supports not (overflow: clip) { html, body { overflow-x: hidden; } }
